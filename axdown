@@ -1,6 +1,13 @@
 #!/bin/sh
 #
 # Clean up on ax25 down
+
+set -e
+if [ -z "$1" ] || [ -z "$2" ]
+  then echo "Usage: $0 [axport] [mainpid]"
+  exit 1;
+fi
+
   /usr/sbin/kissparms -x -p $1
   set +e
   kill $2
