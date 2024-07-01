@@ -1,7 +1,7 @@
 # ax25systemd
 Losely based on https://github.com/la5nta/pat/tree/master/share
 
-To install, edit ax25.default to match match the tnc that you have. Then, run make as root.
+To install, edit ax25.default to match match the tnc that you have. Then, run make install as root.
 
 ## Known issues
 https://github.com/F4FXL/ax25systemd/issues/2
