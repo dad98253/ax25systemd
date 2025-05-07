@@ -2,13 +2,28 @@
 #
 # Clean up on ax25 down
 
+scriptName="${0##*/}"
+
 set -e
 if [ -z "$1" ] || [ -z "$2" ]
-  then echo "Usage: $0 [axport] [mainpid]"
+  then echo "Usage: $scriptName [axport] [mainpid]"
   exit 1;
 fi
 
-  /usr/sbin/kissparms -x -p $1
-  set +e
-  kill $2
-  set -e
+echo "calling axdown $1 $2" | logger
+
+echo "axdown calling kissparms with -x -p $1" | logger
+/usr/sbin/kissparms -x -p $1
+if [ $? -ne 0 ]; then
+  echo "kissparms failed" | logger
+  exit 2;
+fi
+
+echo "axdown killing $2" | logger
+set +e
+kill $2
+set -e
+echo "TERM signal sent to process $2" | logger
+
+echo "axdown complete" | logger
+

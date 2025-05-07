@@ -2,9 +2,11 @@
 #
 # This script is written to help configure an axport
 
+scriptName="${0##*/}"
+
 set -e
-if [ -z "$1" ] || [ -z "$2" ]
-  then echo "Usage: $0 [dev] [axport] [hbaud] [ipaddr]"
+if [ -z "$1" ] || [ -z "$2" ]; then
+  echo "Usage: $scriptName [dev] [axport] [hbaud] [ipaddr]"
   echo "bad axup call - check arguments" | logger
   exit 1;
 fi
@@ -20,8 +22,18 @@ fi
 
 if [ "$3" -eq "9600" ]; then
   echo "axup configuring kiss for 9600 baud" | logger
+  echo "axup calling kissattach with -l $1 $2" | logger
   /usr/sbin/kissattach -l $1 $2
+  if [ $? -ne 0 ]; then
+    echo "kissattach failed with exit code $?" | logger
+    exit 2;
+  fi
+  echo "axup calling kissparms with -p $2 -t 100 -l 10 -s 0 -r 255 -f n" | logger
   /usr/sbin/kissparms -p $2 -t 100 -l 10 -s 0 -r 255 -f n
+  if [ $? -ne 0 ]; then
+    echo "kissparms failed with exit code $?" | logger
+    exit 3;
+  fi
   echo 7      > /proc/sys/net/ax25/ax0/standard_window_size  # 2-7 (max frames)
   echo 255    > /proc/sys/net/ax25/ax0/maximum_packet_length # 1-512 (paclen)
   echo 3100   > /proc/sys/net/ax25/ax0/t1_timeout            # (Frack /1000 = seconds)
@@ -35,8 +47,16 @@ elif [ "$3" -eq "1200" ]; then
   echo "axup configuring kiss for 1200 baud" | logger
   echo "axup calling kissattach with -l $1 $2" | logger
   /usr/sbin/kissattach -l $1 $2
-  echo "axup calling kissparms" | logger
+  if [ $? -ne 0 ]; then
+    echo "kissattach failed with exit code $?" | logger
+    exit 2;
+  fi
+  echo "axup calling kissparms with -p $2 -t 250 -l 10 -s 20 -r 80 -f n" | logger
   /usr/sbin/kissparms -p $2 -t 250 -l 10 -s 20 -r 80 -f n
+  if [ $? -ne 0 ]; then
+    echo "kissparms failed with exit code $?" | logger
+    exit 3;
+  fi
   echo "axup configuring /proc/sys" | logger
   echo 1      > /proc/sys/net/ax25/ax0/standard_window_size
   echo 1      > /proc/sys/net/ax25/ax0/extended_window_size
