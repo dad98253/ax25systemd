@@ -1,0 +1,14 @@
+#!/bin/bash
+printf "HBAUD 1200\n" # make sure HBAUD is set to 1200
+/bin/sleep 1 # give the poor little guy chance to process the command
+printf "DCDCONN ON\n" # enable software digital carrier detect. Allows us to work with squelch fully open
+/bin/sleep 1
+printf "PACLEN 255\n" # Max frame length
+/bin/sleep 1
+printf "MAXFRAME 7\n" # Max of 7 frames in TNC memory
+/bin/sleep 1
+printf "KISS ON\n"    # Turn on KISS mode
+/bin/sleep 1
+printf "RESTART\n"    # Restart the TNC in KISS mode
+/bin/sleep 1
+

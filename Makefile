@@ -16,6 +16,8 @@ install: prerequisites
 	@/bin/chmod +x "/usr/share/kissinit/nordlink_1k2"
 	@/bin/cp "kissinit/ej50u" "/usr/share/kissinit/"
 	@/bin/chmod +x "/usr/share/kissinit/ej50u"
+	@/bin/cp "kissinit/pk232" "/usr/share/kissinit/"
+	@/bin/chmod +x "/usr/share/kissinit/pk232"
 	@#
 	@systemctl daemon-reload
 	@systemctl enable ax25
