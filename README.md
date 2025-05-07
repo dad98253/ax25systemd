@@ -1,6 +1,8 @@
 # ax25systemd
 Losely based on https://github.com/la5nta/pat/tree/master/share
 
+This is a fork of https://github.com/F4FXL/ax25systemd created to work with the Packrat 232 (see branch pk232)
+
 To install, edit ax25.default to match match the tnc that you have. Then, run make install as root.
 
 ## Known issues
